@@ -1,14 +1,14 @@
 import tw2.core as twc, tw2.forms as twf, sqlalchemy as sa, sys
 import sqlalchemy.types as sat, tw2.dynforms as twd
-from widgets import *
-from utils import (
+from tw2.sqla.widgets import *
+from tw2.sqla.utils import (
     is_relation,
     is_onetoone,
     is_manytomany,
     is_manytoone,
     is_onetomany,
 )
-import compat
+import tw2.sqla.compat
 
 
 try:
@@ -291,7 +291,7 @@ class EditPolicy(WidgetPolicy):
         sat.Integer:    twf.TextField(validator=twc.IntValidator),
         sat.DateTime:   twd.CalendarDateTimePicker,
         sat.Date:       twd.CalendarDatePicker,
-        sat.Binary:     twf.FileField,
+        sat.BINARY:     twf.FileField,
         sat.Boolean:    twf.CheckBox,
     }
 

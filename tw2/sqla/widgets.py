@@ -1,7 +1,7 @@
 import tw2.core as twc, tw2.forms as twf, webob, sqlalchemy as sa, sys
 import sqlalchemy.types as sat, tw2.dynforms as twd
-from zope.sqlalchemy import ZopeTransactionExtension
-import transaction, utils, urllib
+from zope.sqlalchemy import register
+import transaction, tw2.sqla.utils, urllib
 
 
 class RelatedValidator(twc.IntValidator):
