@@ -52,7 +52,7 @@ class RelatedValidator(twc.IntValidator):
             raise twc.ValidationError(
                 'from_python not passed instance of self.entity but ' +
                 'instead "%s" of type "%s".' % (str(value), str(type(value))))
-        return value and unicode(sa.orm.object_mapper(value).primary_key_from_instance(value)[0])
+        return value and str(sa.orm.object_mapper(value).primary_key_from_instance(value)[0])
 
 
 class RelatedItemValidator(twc.Validator):
@@ -257,7 +257,7 @@ class DbLinkField(twc.Widget):
     escape = twc.Param('Whether text shall be html-escaped or not', default=True)
 
     def encode(self, value):
-        return urllib.quote(unicode(value).encode('utf-8'))
+        return urllib.quote(str(value).encode('utf-8'))
 
     def prepare(self):
         super(DbLinkField, self).prepare()
@@ -277,7 +277,7 @@ class DbLinkField(twc.Widget):
                         "widget making the query string." % self.link)
 
                 ident = getattr(self.value, pkeys[0].name)
-                self.attrs['href'] = self.link.replace('$', unicode(ident))
+                self.attrs['href'] = self.link.replace('$', str(ident))
             else:
                 qs = '&'.join(col.name + "=" + self.encode(getattr(self.value, col.name))
                                 for col in pkeys)
@@ -289,7 +289,7 @@ class DbLinkField(twc.Widget):
                 # We can have HTML in get_tws_view_html
                 self.escape = False
             else:
-                self.text = unicode(self.value or '')
+                self.text = str(self.value or '')
 
 
 class DbListLinkField(twc.RepeatingWidget):
@@ -312,7 +312,7 @@ class DbSelectionField(twf.SelectionField):
 
 class DbSingleSelectionField(DbSelectionField):
     def prepare(self):
-        self.options = [(getattr(x, self.validator.primary_key.name), unicode(x)) for x in self.entity.query.all()]
+        self.options = [(getattr(x, self.validator.primary_key.name), str(x)) for x in self.entity.query.all()]
         super(DbSingleSelectionField, self).prepare()
 
     @classmethod
@@ -324,7 +324,7 @@ class DbSingleSelectionField(DbSelectionField):
 
 class DbMultipleSelectionField(DbSelectionField):
     def prepare(self):
-        self.options = [(getattr(x, self.item_validator.primary_key.name), unicode(x)) for x in self.entity.query.all()]
+        self.options = [(getattr(x, self.item_validator.primary_key.name), str(x)) for x in self.entity.query.all()]
         super(DbMultipleSelectionField, self).prepare()
 
     @classmethod
